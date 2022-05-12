@@ -1,0 +1,49 @@
+
+<h3>add new customer</h3>
+<form method="POST" action="/customer/add">
+    <input type="text" name="first_name" placeholder="first_name">
+    <input type="text" name="last_name" placeholder="last_name">
+   
+    <input type="submit" value="submit">
+</form>
+<h3>Recommend Car</h3>
+<form method="POST" action="/customer/recommend">
+    <input type="text" name="last_name" placeholder="last name">
+    <input type="submit" value="submit">
+</form>
+
+<h3>Add Review</h3>
+<form method="POST" action="/customer/review">
+    <input type="text" name="last_name" placeholder="last name">
+    <input type="text" name="car_model" placeholder="car model">
+    <input type="text" name="trip_id" placeholder="trip id">
+    <label for="Comfort">Comfort (between 1 and 5):</label>
+    <input type="range" id="Comfort" name="r_comfort" min="1" max="5">
+    <label for="Condition">Condition (between 1 and 5):</label>
+    <input type="range" id="Condition" name="r_condition" min="1" max="5">
+    <label for="Mileage">Mileage (between 1 and 5):</label>
+    <input type="range" id="Mileage" name="r_mileage" min="1" max="5">
+    <textarea id="review" name="review" rows="4" cols="50"> </textarea>
+    <input type="submit" value="submit">
+</form>
+
+<h3>Recommend a car</h3>
+<form method="POST" action="/customer/recommend">
+    <input type="text" name = "last_name" placeholder="last name">
+    <input type="submit" value="submit">
+</form>
+
+<h3>Customers</h3>
+<ul>
+<% customer.forEach(function(customer){ %>
+<li><a href="/customer/<%=customer.id %>"><%=customer.first_name%> <%=customer.last_name%></a></li>
+<%})%>
+</ul>
+
+<h3>Cars</h3>
+<ul>
+<% car.forEach(function(car){ %>
+<li><%=car.car_model%> <%=car.car_make%></li>
+<%})%>
+</ul>
+

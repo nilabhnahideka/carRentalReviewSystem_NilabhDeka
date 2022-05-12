@@ -1,0 +1,16 @@
+<h1>Customer</h1>
+<%= last_name%>
+
+<h3>Rented</h3>
+<ul>
+<% Rented.forEach(function(Rented){ %>
+<li><%=Rented.car_model%> <%=Rented.car_make%></li>
+<% }); %>
+</ul>
+
+<h3>Reviewed</h3>
+<ul>
+<% Reviewed.forEach(function(Reviewed){ %>
+<li><%=Reviewed.car_model%> <%=Reviewed.car_make%></li>
+<% }); %>
+</ul>
