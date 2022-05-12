@@ -5,6 +5,9 @@ var cookieParser= require('cookie-parser');
 var bodyParser= require('body-parser');
 var neo4j = require('neo4j-driver');
 const { match } = require('assert');
+const { emitWarning } = require('process');
+const res = require('express/lib/response');
+const { query } = require('express');
 
 
 var app = express();
@@ -19,8 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j','123'));
 var session = driver.session();
-
-
 
 
 
@@ -84,29 +85,50 @@ app.post('/customer/add',function(req,res){
 
 
 })
+async function  getReviews(){
+// var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j','123'));
+var last_name = 'Ange';
+var session = driver.session();
+const query = await session.run(`Match(n:Customer{last_name:'${last_name}'})-[r:REVIEWED]->(m:Cars) WHERE r.r_comfort >= 3 and r.r_condition >= 3 and r.r_mileage >= 1 return Distinct m.car_make`)
+console.log(query.records.forEach((record)=>{
+console.log(record._fields.car_make)
+}))
+
+}
+
+
+app.get('/review', async (req, res) => {
+    
+    
+
+   await getReviews() // Right here
+
+
+  })
+
+
 
 //recommend
-app.post('/customer/recommend', function(req,res){
-    var last_name= req.body.last_name;
-    var carModelARR=[];
-    session 
-        .run("MATCH (n:Customer {last_name:$lastParam})-[r:REVIEWED]-(m:Cars) WHERE r.r_comfort > 3 and r.r_condition > 3 and r.r_mileage > 1 RETURN DISTINCT m", {lastParam:last_name})
-        .then(function(result){
-             res.redirect('/') 
-                })
+// app.post('/customer/recommend', function(req,res){
+//     var last_name= req.body.last_name;
+//     var carModelARR=[];
+//     session 
+//         .run("MATCH (n:Customer {last_name:$lastParam})-[r:REVIEWED]->(m:Cars) WHERE r.r_comfort > 3 and r.r_condition > 3 and r.r_mileage > 1 RETURN DISTINCT m", {lastParam:last_name})
+//         .then(function(result){
+//              res.redirect('/') 
+//                 })
                 
-            
-            
+// `MATCH (n:Customer {last_name:'${last_name}}')-[r:REVIEWED]->(m:Cars) WHERE r.r_comfort > 3 and r.r_condition > 3 and r.r_mileage > 1 RETURN DISTINCT m`      
+// 
         
-        // res.render('index',{
-        //     carname : carModelARR
-        //     })
-            .catch(function(err){
-                console.log(err);
-            })  
-    })
+//         // res.render('index',{
+//         //     carname : carModelARR
+//         //     })
+//             .catch(function(err){
+//                 console.log(err);
+//             })  
+//     }
      
-        
       
 
 
